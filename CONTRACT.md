@@ -19,7 +19,97 @@ different and the consumer callsites will resolve to the one with 4 args.
 
 ### What happened
 
-**The result.** The build was successful and all the tests passed.
+**The result.**
+
+```
+Sanjana@sanjanas-mac 17514-f26-lab06 % mvn -B test
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]
+[INFO] lab06-booking-parent                                               [pom]
+[INFO] lab06-api                                                          [jar]
+[INFO] lab06-consumer                                                     [jar]
+[INFO]
+[INFO] -----------------< edu.cmu.cs214:lab06-booking-parent >-----------------
+[INFO] Building lab06-booking-parent 1.0.0                                [1/3]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] ----------------------< edu.cmu.cs214:lab06-api >-----------------------
+[INFO] Building lab06-api 1.0.0                                           [2/3]
+[INFO]   from api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.4.0:resources (default-resources) @ lab06-api ---
+[INFO] skip non existing resourceDirectory /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/api/src/main/resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ lab06-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ lab06-api ---
+[INFO] skip non existing resourceDirectory /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/api/src/test/resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ lab06-api ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.6:test (default-test) @ lab06-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running edu.cmu.cs214.booking.InMemoryBookingServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.034 s -- in edu.cmu.cs214.booking.InMemoryBookingServiceTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --------------------< edu.cmu.cs214:lab06-consumer >--------------------
+[INFO] Building lab06-consumer 1.0.0                                      [3/3]
+[INFO]   from consumer/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- resources:3.4.0:resources (default-resources) @ lab06-consumer ---
+[INFO] skip non existing resourceDirectory /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/src/main/resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ lab06-consumer ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ lab06-consumer ---
+[INFO] skip non existing resourceDirectory /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/src/test/resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ lab06-consumer ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO]
+[INFO] --- surefire:3.5.6:test (default-test) @ lab06-consumer ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running edu.cmu.cs214.frontdesk.FrontDeskTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.045 s -- in edu.cmu.cs214.frontdesk.FrontDeskTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for lab06-booking-parent 1.0.0:
+[INFO]
+[INFO] lab06-booking-parent ............................... SUCCESS [  0.001 s]
+[INFO] lab06-api .......................................... SUCCESS [  0.604 s]
+[INFO] lab06-consumer ..................................... SUCCESS [  0.303 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.955 s
+[INFO] Finished at: 2026-10-02T09:49:54-04:00
+[INFO] ------------------------------------------------------------------------
+```
 
 **If your prediction was wrong,** N/A
 
