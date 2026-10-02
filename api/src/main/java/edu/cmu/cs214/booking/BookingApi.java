@@ -30,7 +30,7 @@ public interface BookingApi {
      *
      * <p>
      * If some CONFIRMED booking does overlap, what happens next is decided
-     * by {@code waitlistKey}:
+     * by the request's {@code waitlistKey}:
      * <ul>
      * <li>{@code waitlistKey} null means do not waitlist on conflict. No
      * booking is created and the method returns null. Nothing about the
@@ -53,45 +53,20 @@ public interface BookingApi {
      * Ids are assigned by the implementation, are unique, and increase in
      * creation order.
      *
-     * @param roomId      the room to book, non-null
-     * @param startMinute first minute of the booking, inclusive
-     * @param endMinute   first minute after the booking, exclusive; must be
-     *                    greater than {@code startMinute}
-     * @param waitlistKey caller's waitlist key, or null to decline waitlisting
-     * @return the CONFIRMED booking, the WAITLISTED booking, or null when the
-     *         range conflicts and no waitlist key was given
-     * @throws IllegalArgumentException if {@code roomId} is null or
-     *                                  {@code endMinute} is not greater than
-     *                                  {@code startMinute}
-     */
-    Booking createBooking(String roomId, long startMinute, long endMinute,
-            String waitlistKey);
-
-    /**
-     * Books a room exactly as {@link #createBooking(String, long, long, String)}
-     * does, and additionally attaches free-text notes to the booking.
-     *
      * <p>
-     * The notes are opaque to this API: they are stored and handed back on
-     * {@link Booking#getNotes()}, never interpreted, and have no effect on
-     * conflict detection or waitlisting. A null {@code notes} is allowed and
-     * means no notes. The four-argument method behaves as if it were called
-     * with null notes.
+     * The notes on the request are opaque to this API: they are stored and
+     * handed back on {@link Booking#getNotes()}, never interpreted, and have no
+     * effect on conflict detection or waitlisting. Null notes mean no notes.
      *
-     * @param roomId      the room to book, non-null
-     * @param startMinute first minute of the booking, inclusive
-     * @param endMinute   first minute after the booking, exclusive; must be
-     *                    greater than {@code startMinute}
-     * @param waitlistKey caller's waitlist key, or null to decline waitlisting
-     * @param notes       caller's free-text notes, or null for none
+     * @param request the booking to make, non-null; its room id must be
+     *                non-null and its end minute greater than its start minute
      * @return the CONFIRMED booking, the WAITLISTED booking, or null when the
-     *         range conflicts and no waitlist key was given
-     * @throws IllegalArgumentException if {@code roomId} is null or
-     *                                  {@code endMinute} is not greater than
-     *                                  {@code startMinute}
+     *         range conflicts and the request has no waitlist key
+     * @throws IllegalArgumentException if {@code request} is null, its room id
+     *                                  is null, or its end minute is not
+     *                                  greater than its start minute
      */
-    Booking createBooking(String roomId, long startMinute, long endMinute,
-            String waitlistKey, String notes);
+    Booking createBooking(BookingRequest request);
 
     /**
      * Returns every non-cancelled booking for one room, ordered by start minute.
@@ -115,11 +90,10 @@ public interface BookingApi {
     List<Booking> listBookings(String roomId);
 
     /**
-     * one booking, optionally promoting som
-     * one off the waitlist.
+     * one booking, optionally promoting someone off the waitlist.
      *
      * <p>
-     * The booking's status becomes CANCELLED. It stops holding the roo
+     * The booking's status becomes CANCELLED. It stops holding the room.
      * {@link #listBookings(String)}.
      *
      * <p>
@@ -132,7 +106,6 @@ public interface BookingApi {
      * implementation takes the first in creation order that no longer
      * conflicts with any remaining CONFIRMED booking, and sets it to
      * CONFIRMED. If every candidate still conflicts, or there are no
-     * 
      * candidates, nothing is promoted and the cancellation still
      * stands.</li>
      * <li>false cancels quietly. No booking is ever promoted, and the
