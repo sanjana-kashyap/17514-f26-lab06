@@ -486,27 +486,44 @@ Not coded. One misuse, one redesign, one cost. Discuss it with your TA.
 
 ### The misuse
 
-**What is easy to get wrong.** One specific thing about the API surface.
+**What is easy to get wrong.** The five-arg overload for `createBooking()` has
+two adjacent String parameters, so it could be easy to mix them up without the
+compiler being able to catch it.
 
-**The call site.** File and line in `consumer/`, with the call. Show the code
-that a reader cannot understand without opening the javadoc, or that a caller
-could get wrong with the compiler still happy.
+**The call site.** `FrontDesk.java:27` for `Booking.bookWalkIn()` and
+`FrontDesk.java:33` for `Booking.joinWaitlist()`
 
-**What goes wrong when it happens.** Silent bad behavior, wrong data, a crash
-somewhere far away?
+Code that needs the Javadoc for explanation:
+
+```java
+default Booking createBooking(String roomId, long startMinute, long endMinute,
+        String waitlistKey, String notes) {
+    ...
+}
+```
+
+**What goes wrong when it happens.** This silently waitlists on the notes text
+and stores the guest's name as "notes". Nothing throws, `FrontDesk.label()`
+would give us an unexpected value.
 
 ### The redesign
 
-**The proposal.** Types, enums, factories, or whatever you are proposing. Show
-the new signature and the new call site.
+**The proposal.** We drop the overloads altogether and wrap the two strings in
+distinct types instead of raw Strings to avoid type collision in the call to the
+builder/constructor of `BookingRequest`. We wrap the two strings in distinct
+types instead of raw Strings and just drop the deprecated overloads altogether.
 
-**Why the mistake is now hard or impossible to make.** Point at the mechanism,
-such as the compiler, a validating constructor, or an exhaustive switch.
+**Why the mistake is now hard or impossible to make.** The compiler will now
+catch any type mismatches and is impossible to make the same mistake of misusing
+the method.
 
 ### One tradeoff
 
-**What it costs.** Something real, such as caller ceremony, migration burden
-against the deprecation path you just built, or more types for a newcomer to
-learn. "No real downside" does not count.
+**What it costs.** We will be breakign every caller on the old positional
+overloads and we have to add two new small types that the callers must construct
+instead of passing over raw Strings.
 
-**When the price is worth paying.** A condition under which it is.
+**When the price is worth paying.** The price is worth paying because the
+compiler is actually catching the misuse instead of relying on the developers to
+read the Javadoc thoroughly and be very careful about the function arg
+positional order.
