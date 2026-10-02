@@ -15,8 +15,8 @@ harmless was actually harmless.
     Read this one closely. Every milestone argues about what it promises.
   - `Booking.java`, `BookingStatus.java`: the data the API hands back.
   - `InMemoryBookingService.java`: the working implementation.
-  - Tests under `src/test/java`: the producer's own suite. Note what it does
-    and does not check.
+  - Tests under `src/test/java`: the producer's own suite. Note what it does and
+    does not check.
 - `consumer/` (package `edu.cmu.cs214.frontdesk`)
   - `FrontDesk.java`: books walk-ins, queues guests on the waitlist, prints a
     room's schedule, cancels two different ways.
@@ -38,7 +38,11 @@ From this directory. Maven builds `api` first, then compiles and tests
 - Setup: `SETUP.md`
 - Your worksheet: `CONTRACT.md`, filled in as you go, one section per milestone
 - CI: `.github/workflows/ci.yml`, the same command on every push. GitHub
-  disables workflows on a fresh fork, so enable them from the Actions tab if
-  you want it running.
+  disables workflows on a fresh fork, so enable them from the Actions tab if you
+  want it running.
 
 See the Lab 6 handout on the course page for the three milestones you show a TA.
+
+## Tools/Models used
+
+Claude Code Sonnet 5.5 and Sonnet 5.
