@@ -351,16 +351,132 @@ The consumer can detect a break in contract.
 
 ### Step 2: the deprecation path
 
-**What you added.** The signatures that came back, and what they delegate to.
+**What you added.** `createBooking(roomId, start, end, waitlistKey)` and
+`createBooking(roomId, start, end, waitlistKey, notes)` both delegate to
+`createBooking(BookingRequest)`.
 
-**The warnings.** Paste one deprecation warning line from the build log (from a
-`mvn -B clean test` run, since a rerun with nothing to compile prints none).
+**Build output.**
 
-**What the deprecation path resolves.** Who can now build that could not build
-during step 1, and who is on which schedule.
+```
+Sanjana@sanjanas-mac 17514-f26-lab06 % mvn -B clean test
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]
+[INFO] lab06-booking-parent                                               [pom]
+[INFO] lab06-api                                                          [jar]
+[INFO] lab06-consumer                                                     [jar]
+[INFO]
+[INFO] -----------------< edu.cmu.cs214:lab06-booking-parent >-----------------
+[INFO] Building lab06-booking-parent 1.0.0                                [1/3]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- clean:3.2.0:clean (default-clean) @ lab06-booking-parent ---
+[INFO]
+[INFO] ----------------------< edu.cmu.cs214:lab06-api >-----------------------
+[INFO] Building lab06-api 1.0.0                                           [2/3]
+[INFO]   from api/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.2.0:clean (default-clean) @ lab06-api ---
+[INFO] Deleting /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/api/target
+[INFO]
+[INFO] --- resources:3.4.0:resources (default-resources) @ lab06-api ---
+[INFO] skip non existing resourceDirectory /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/api/src/main/resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ lab06-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 5 source files with javac [debug deprecation release 21] to target/classes
+[INFO]
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ lab06-api ---
+[INFO] skip non existing resourceDirectory /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/api/src/test/resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ lab06-api ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug deprecation release 21] to target/test-classes
+[INFO]
+[INFO] --- surefire:3.5.6:test (default-test) @ lab06-api ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running edu.cmu.cs214.booking.InMemoryBookingServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.064 s -- in edu.cmu.cs214.booking.InMemoryBookingServiceTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --------------------< edu.cmu.cs214:lab06-consumer >--------------------
+[INFO] Building lab06-consumer 1.0.0                                      [3/3]
+[INFO]   from consumer/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.2.0:clean (default-clean) @ lab06-consumer ---
+[INFO] Deleting /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/target
+[INFO]
+[INFO] --- resources:3.4.0:resources (default-resources) @ lab06-consumer ---
+[INFO] skip non existing resourceDirectory /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/src/main/resources
+[INFO]
+[INFO] --- compiler:3.13.0:compile (default-compile) @ lab06-consumer ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug deprecation release 21] to target/classes
+[WARNING] /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/src/main/java/edu/cmu/cs214/frontdesk/FrontDesk.java:[27,19] createBooking(java.lang.String,long,long,java.lang.String) in edu.cmu.cs214.booking.BookingApi has been deprecated
+[WARNING] /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/src/main/java/edu/cmu/cs214/frontdesk/FrontDesk.java:[33,19] createBooking(java.lang.String,long,long,java.lang.String) in edu.cmu.cs214.booking.BookingApi has been deprecated
+[INFO]
+[INFO] --- resources:3.4.0:testResources (default-testResources) @ lab06-consumer ---
+[INFO] skip non existing resourceDirectory /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/src/test/resources
+[INFO]
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ lab06-consumer ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug deprecation release 21] to target/test-classes
+[INFO]
+[INFO] --- surefire:3.5.6:test (default-test) @ lab06-consumer ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running edu.cmu.cs214.frontdesk.FrontDeskTest
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.046 s -- in edu.cmu.cs214.frontdesk.FrontDeskTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for lab06-booking-parent 1.0.0:
+[INFO]
+[INFO] lab06-booking-parent ............................... SUCCESS [  0.088 s]
+[INFO] lab06-api .......................................... SUCCESS [  0.976 s]
+[INFO] lab06-consumer ..................................... SUCCESS [  0.389 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.499 s
+[INFO] Finished at: 2026-10-02T10:17:39-04:00
+[INFO] ------------------------------------------------------------------------
+```
 
-**What the warnings accomplish that a README note would not.** Be concrete about
-where the warning shows up and who sees it without looking for it.
+**The warnings.**
+
+```
+[WARNING] /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/src/main/java/edu/cmu/cs214/frontdesk/FrontDesk.java:[27,19] createBooking(java.lang.String,long,long,java.lang.String) in edu.cmu.cs214.booking.BookingApi has been deprecated
+[WARNING] /Users/Sanjana/repos/cmu-agentic-software/17514-f26-lab06/consumer/src/main/java/edu/cmu/cs214/frontdesk/FrontDesk.java:[33,19] createBooking(java.lang.String,long,long,java.lang.String) in edu.cmu.cs214.booking.BookingApi has been deprecated
+```
+
+**What the deprecation path resolves.** The consumer can now build again and is
+on the provider's deprecation/EOL schedule for when the overloads will be phased
+out. It's the responsibility of the provider to give details about the
+`createBooking(BookingRequest)` alternative and deprecation timelines, and on
+the consumer to make the switch to the recommended alternative(s).
+
+**What the warnings accomplish that a README note would not.** Provide signals
+in the development environment instead of becoming a piece of documentation that
+the consumer glosses over.
 
 ---
 
