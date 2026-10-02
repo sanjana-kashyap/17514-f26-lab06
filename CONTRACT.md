@@ -11,19 +11,21 @@ Keep it short and specific. Point at methods, call sites, and error text.
 
 ### Prediction (write this before you run the build, and you can deliberate with your agent)
 
-**Will the consumer, untouched, still compile and pass?** Yes or no.
+**Will the consumer, untouched, still compile and pass?** Yes
 
-**Why.** What does the compiler do with the consumer's existing call sites once
-the new overload exists?
+**Why.** The compiler maps the existing calls to the first version of
+`createBooking()` that the repository came with. The argument counts are
+different and the consumer callsites will resolve to the one with 4 args.
 
 ### What happened
 
-**The result.** What the build printed for each module.
+**The result.** The build was successful and all the tests passed.
 
-**If your prediction was wrong,** say what you missed.
+**If your prediction was wrong,** N/A
 
-**Is an additive change always safe in Java?** One case where adding something
-to an API still breaks a caller, if you can name one.
+**Is an additive change always safe in Java?** As long as the other callsites
+don't change + the argument counts are different - otherwise we could have
+conflicting types.
 
 ---
 
@@ -41,8 +43,8 @@ result is evidence about the consumer.
 
 ### Step 1: after the fold
 
-**What the build printed.** Paste it for each module, including file and
-line for anything that failed.
+**What the build printed.** Paste it for each module, including file and line
+for anything that failed.
 
 **Which module's tests ran, and which did not.** And what that tells you about
 who can detect a contract break.
@@ -51,14 +53,14 @@ who can detect a contract break.
 
 **What you added.** The signatures that came back, and what they delegate to.
 
-**The warnings.** Paste one deprecation warning line from the build log (from
-a `mvn -B clean test` run, since a rerun with nothing to compile prints none).
+**The warnings.** Paste one deprecation warning line from the build log (from a
+`mvn -B clean test` run, since a rerun with nothing to compile prints none).
 
 **What the deprecation path resolves.** Who can now build that could not build
 during step 1, and who is on which schedule.
 
-**What the warnings accomplish that a README note would not.** Be concrete
-about where the warning shows up and who sees it without looking for it.
+**What the warnings accomplish that a README note would not.** Be concrete about
+where the warning shows up and who sees it without looking for it.
 
 ---
 
@@ -70,9 +72,9 @@ Not coded. One misuse, one redesign, one cost. Discuss it with your TA.
 
 **What is easy to get wrong.** One specific thing about the API surface.
 
-**The call site.** File and line in `consumer/`, with the call. Show the
-code that a reader cannot understand without opening the javadoc, or that a
-caller could get wrong with the compiler still happy.
+**The call site.** File and line in `consumer/`, with the call. Show the code
+that a reader cannot understand without opening the javadoc, or that a caller
+could get wrong with the compiler still happy.
 
 **What goes wrong when it happens.** Silent bad behavior, wrong data, a crash
 somewhere far away?
